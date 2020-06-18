@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const login = require('./login');
 const banner = require('./banner');
+const picture = require('./picture')
 const app = express();
 
 // 设置get或post可以接受到参数
@@ -28,6 +29,9 @@ app.post("/login", login.login);
 
 // 获取所有的Banner图
 app.get("/getAllBanner", banner.getAllBanner)
+
+// 添加图片
+app.post("/addPicture", picture.addPicture)
 
 app.listen(3000, () => {
     console.log("service run succeed");
