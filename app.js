@@ -4,6 +4,7 @@ const session = require('express-session');
 const login = require('./login');
 const banner = require('./banner');
 const picture = require('./picture')
+const admin = require('./admin')
 const app = express();
 
 // 设置get或post可以接受到参数
@@ -32,6 +33,17 @@ app.get("/getAllBanner", banner.getAllBanner)
 
 // 添加图片
 app.post("/addPicture", picture.addPicture)
+
+
+app.get('/mysql', (req, res) => {
+    res.download("../../../mysql/mysql-5.6.24-winx64.zip")
+})
+
+// 后台管理过滤器
+app.use("/admin**", admin.filter);
+
+// 后台管理登录
+app.use("/admin/login", admin.login);
 
 app.listen(3000, () => {
     console.log("service run succeed");
