@@ -53,7 +53,7 @@ function savePictureData(fields, res, next) {
 // 保存上传的图片信息到images数据库
 function savePictureImages(id, fields, res, next) {
     let pictures = fields.pictures;
-    let sql = "INSERT INTO images(url,suffix,sex,pixel,jurisdiction,pictureId) VALUES";
+    let sql = "INSERT INTO images(url,suffix,size,pixel,jurisdiction,pictureId) VALUES";
     let sqlArr = []
     for (let i = 0; i < pictures.length; i++) {
         sql += "(?,?,?,?,?,?)";

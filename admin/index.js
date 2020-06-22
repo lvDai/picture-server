@@ -97,3 +97,95 @@ exports.removeTag = (req, res, next) => {
         public.returnStatus(res, 1, null, items);
     })
 }
+
+exports.getPagesNoAuditPictures = (req, res, next) => {
+    let sql = "SELECT id,publishTime,source,userId,url FROM pictures WHERE STATUS = 0 limit ?,?";
+    let sqlArr = [(req.query.index - 1) * req.query.pages, req.query.pages * 1];
+    mysql.transactionQuery(sql, sqlArr, (err, items) => {
+        if (err) {
+            public.returnStatus(res, 0, err, null);
+            return;
+        }
+        public.returnStatus(res, 1, null, items);
+    })
+}
+
+exports.getPagesPicture = (req, res, next) => {
+    let sql = "SELECT id,publishTime,source,userId,url FROM pictures WHERE STATUS = 1 limit ?,?";
+    let sqlArr = [(req.query.index - 1) * req.query.pages, req.query.pages * 1];
+    mysql.transactionQuery(sql, sqlArr, (err, items) => {
+        if (err) {
+            public.returnStatus(res, 0, err, null);
+            return;
+        }
+        public.returnStatus(res, 1, null, items);
+    })
+}
+
+exports.getImages = (req, res, next) => {
+    let sql = "select id,url,suffix,size,pixel from images where pictureId = ?";
+    let sqlArr = [req.query.pictureId];
+    mysql.transactionQuery(sql, sqlArr, (err, items) => {
+        if (err) {
+            public.returnStatus(res, 0, err, null);
+            return;
+        }
+        public.returnStatus(res, 1, null, items);
+    })
+}
+
+exports.pictureApprove = (req, res, next) => {
+    let sql = "update pictures set status = 1 where id = ?";
+    let sqlArr = [req.body.id];
+    mysql.transactionQuery(sql, sqlArr, (err, items) => {
+        if (err) {
+            public.returnStatus(res, 0, err, null);
+            return;
+        }
+        public.returnStatus(res, 1, null, items);
+    })
+}
+
+exports.auditDefeated = (req, res, next) => {
+    let sql = "update pictures set status = 2 where id = ?";
+    let sqlArr = [req.body.id];
+    mysql.transactionQuery(sql, sqlArr, (err, items) => {
+        if (err) {
+            public.returnStatus(res, 0, err, null);
+            return;
+        }
+        let sql = "INSERT into auditDefeated(pictureId,cause) values(?,?)";
+        let sqlArr = [req.body.id, req.body.cause];
+        mysql.transactionQuery(sql, sqlArr, (err, items) => {
+            if (err) {
+                public.returnStatus(res, 0, err, null);
+                return;
+            }
+            public.returnStatus(res, 1, null, items);
+        })
+    })
+}
+
+exports.getAllAuditPictures = (req, res, next) => {
+    let sql = "select COUNT(*) count from pictures where status = 1";
+    let sqlArr = null;
+    mysql.transactionQuery(sql, sqlArr, (err, items) => {
+        if (err) {
+            public.returnStatus(res, 0, err, null);
+            return;
+        }
+        public.returnStatus(res, 1, null, items);
+    })
+}
+
+exports.getAllNoAuditPictures = (req, res, next) => {
+    let sql = "select COUNT(*) count from pictures where status = 0";
+    let sqlArr = null;
+    mysql.transactionQuery(sql, sqlArr, (err, items) => {
+        if (err) {
+            public.returnStatus(res, 0, err, null);
+            return;
+        }
+        public.returnStatus(res, 1, null, items);
+    })
+}

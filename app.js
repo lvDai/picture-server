@@ -6,6 +6,7 @@ const banner = require('./banner');
 const picture = require('./picture')
 const admin = require('./admin')
 const tag = require('./tag')
+const category = require("./category")
 const app = express();
 
 // 设置get或post可以接受到参数
@@ -62,6 +63,30 @@ app.post("/admin/addTag", admin.addTag)
 
 // 删除标签
 app.post("/admin/removeTag", admin.removeTag);
+
+// 获取所有类别
+app.get("/getAllCategory", category.getAllCategory);
+
+// 获取未审核的图片
+app.get("/admin/getPagesNoAuditPictures", admin.getPagesNoAuditPictures);
+
+// 获取已审核的图片
+app.get("/admin/getPagesPicture", admin.getPagesPicture);
+
+// 获取已审核的图片总条数
+app.get("/admin/getAllAuditPictures", admin.getAllAuditPictures);
+
+// 根据pictureId获取images
+app.get("/admin/getImages", admin.getImages);
+
+// 图片审核通过
+app.post("/admin/pictureApprove", admin.pictureApprove);
+
+// 图片审核失败
+app.post("/admin/auditDefeated", admin.auditDefeated);
+
+// 获取未审核的图片数量
+app.get("/admin/getAllNoAuditPictures", admin.getAllNoAuditPictures);
 
 app.listen(3000, () => {
     console.log("service run succeed");
