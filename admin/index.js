@@ -7,11 +7,10 @@ exports.filter = (req, res, next) => {
         if (req.baseUrl == "/admin/login") {
             next();
             return;
+        } else if (req.session.adminUser) {
+            next();
+            return;
         }
-        // else if (req.session.adminUser) {
-        next();
-        return;
-        // }
         public.returnStatus(res, 406, "权限不足", null);
         return false;
     }
@@ -38,7 +37,7 @@ exports.login = (req, res, next) => {
 }
 
 exports.getUserPaging = (req, res, next) => {
-    let sql = "SELECT id,name,status FROM user LIMIT ?,?";
+    let sql = "SELECT id,name,status,jurisdiction FROM user LIMIT ?,?";
     let sqlArr = [(req.query.index * 1 - 1) * req.query.pages, req.query.pages * 1];
     mysql.transactionQuery(sql, sqlArr, (err, items) => {
         if (err) {
@@ -98,8 +97,9 @@ exports.removeTag = (req, res, next) => {
     })
 }
 
+// 获取未审核的图片
 exports.getPagesNoAuditPictures = (req, res, next) => {
-    let sql = "SELECT id,publishTime,source,userId,url FROM pictures WHERE STATUS = 0 limit ?,?";
+    let sql = "SELECT id,publishTime,source,userId,url,categoryId FROM pictures WHERE STATUS = 0 limit ?,?";
     let sqlArr = [(req.query.index - 1) * req.query.pages, req.query.pages * 1];
     mysql.transactionQuery(sql, sqlArr, (err, items) => {
         if (err) {
@@ -110,8 +110,9 @@ exports.getPagesNoAuditPictures = (req, res, next) => {
     })
 }
 
+// 获取已审核的图片
 exports.getPagesPicture = (req, res, next) => {
-    let sql = "SELECT id,publishTime,source,userId,url FROM pictures WHERE STATUS = 1 limit ?,?";
+    let sql = "SELECT id,publishTime,source,userId,url,categoryId FROM pictures WHERE STATUS = 1 limit ?,?";
     let sqlArr = [(req.query.index - 1) * req.query.pages, req.query.pages * 1];
     mysql.transactionQuery(sql, sqlArr, (err, items) => {
         if (err) {

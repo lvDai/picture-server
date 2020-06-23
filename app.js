@@ -39,9 +39,37 @@ app.post("/addPicture", picture.addPicture)
 // 获取所有标签
 app.get("/getAlltags", tag.getAlltags)
 
+// 根据id搜索图片
+app.get("/getByCategoryId", category.getByCategoryId);
+
+// 根据tagId查询图片
+app.get("/getByTagIdPictures", tag.getByTagIdPictures);
+
+// 根据搜索的内容查询图片
+app.get("/getContentPictures", picture.getContentPictures);
+
+// 根据图片id查询详细信息
+app.get("/getPictureDetail", picture.getPictureDetail);
+
+app.get("/getPictureIdBytags", picture.getPictureIdBytags)
+
+// 根据新发布的图片排序
+app.get("/getNewRelease", picture.getNewRelease);
+
+// 下载图片
+app.post("/imageDownload", (req, res) => {
+    res.download("../data/images/b/" + req.body.url);
+})
+
+// 根据图片id获取标签
 app.get('/mysql', (req, res) => {
     res.download("../../../mysql/mysql-5.6.24-winx64.zip")
 })
+
+// 根据人气搜索图片
+app.get("/getPopularityPicture", picture.getPopularityPicture)
+    // 验证用户是否有权限下载
+app.post("/postDownloadImage", picture.postDownloadImage);
 
 // 后台管理过滤器
 app.use("/admin**", admin.filter);
@@ -87,6 +115,9 @@ app.post("/admin/auditDefeated", admin.auditDefeated);
 
 // 获取未审核的图片数量
 app.get("/admin/getAllNoAuditPictures", admin.getAllNoAuditPictures);
+
+// 获取所有的标签
+app.get("/admin/getAllCategory", category.getAllCategory)
 
 app.listen(3000, () => {
     console.log("service run succeed");

@@ -5,6 +5,7 @@
     "express-session": "^1.17.1",
     "formidable": "^1.2.2",
     "mysql": "^2.18.1",
+    "node-rsa": "^1.0.8",
     "nodemon": "^2.0.4"
   }
 }
