@@ -3,6 +3,8 @@ const mysql = require('../mysql');
 
 
 exports.filter = (req, res, next) => {
+    next();
+    return;
     if (req.baseUrl) {
         if (req.baseUrl == "/admin/login") {
             next();
@@ -37,7 +39,7 @@ exports.login = (req, res, next) => {
 }
 
 exports.getUserPaging = (req, res, next) => {
-    let sql = "SELECT id,name,status,jurisdiction FROM user LIMIT ?,?";
+    let sql = "SELECT uid,username,email,cellphone,type,create_date,lastmodify_date FROM t_user LIMIT ?,?";
     let sqlArr = [(req.query.index * 1 - 1) * req.query.pages, req.query.pages * 1];
     mysql.transactionQuery(sql, sqlArr, (err, items) => {
         if (err) {

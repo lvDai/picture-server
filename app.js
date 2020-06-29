@@ -6,6 +6,7 @@ const banner = require('./banner');
 const picture = require('./picture')
 const admin = require('./admin')
 const tag = require('./tag')
+const controller = require('./controller')
 const category = require("./category")
 const app = express();
 
@@ -56,6 +57,9 @@ app.get("/getPictureIdBytags", picture.getPictureIdBytags)
 // 根据新发布的图片排序
 app.get("/getNewRelease", picture.getNewRelease);
 
+// 添加相簿
+app.post("/admin/addAlbum", controller.addAlbum)
+
 // 下载图片
 app.post("/imageDownload", (req, res) => {
     res.download("../data/images/b/" + req.body.url);
@@ -79,6 +83,27 @@ app.post("/admin/login", admin.login);
 
 // 获取分页用户数据
 app.get("/admin/getUserPaging", admin.getUserPaging)
+
+// 根据分页查询群组
+app.get("/admin/getPagingGroup", controller.getPagingGroup);
+
+// 查询相簿总条数
+app.get("/admin/getAlbumAllPages", controller.getAlbumAllPages);
+
+// 添加群组
+app.post("/admin/addGroup", controller.addGroup);
+
+// 删除群组
+app.post('/admin/removeGroup', controller.removeGroup);
+
+// 获取所有的群组
+app.get("/admin/getAllGroup", controller.getAllGroup);
+
+// 根据群组id获取非这个id的所有相簿
+app.get("/admin/getNoGidAlbum", controller.getNoGidAlbum)
+
+// 添加相簿到群组
+app.post("/admin/addAlbumGroup", controller.addAlbumGroup);
 
 // 获取用户总数量
 app.get("/admin/getUserAllPages", admin.getUserAllPages)
@@ -106,6 +131,22 @@ app.get("/admin/getAllAuditPictures", admin.getAllAuditPictures);
 
 // 根据pictureId获取images
 app.get("/admin/getImages", admin.getImages);
+
+
+// 获取所有分类
+app.get("/admin/getAllCatalog", controller.getAllCatalog)
+
+// 获取相簿信息
+app.get("/admin/getAlbumPaging", controller.getAlbumPaging);
+
+//  获取相簿详细数据
+app.get("/admin/getAlbumDetail", controller.getAlbumDetail);
+
+// 修改相簿
+app.post("/admin/updateAlbum", controller.updateAlbum);
+
+// 删除相簿
+app.post("/admin/removeAlbume", controller.removeAlbume);
 
 // 图片审核通过
 app.post("/admin/pictureApprove", admin.pictureApprove);

@@ -8,7 +8,7 @@ const mysqlConfig = {
     //  连接数据的密码
     password: "123456",
     //  连接数据库的那个库
-    database: "picturedata"
+    database: "picture"
 }
 
 // 配置mysql连接池

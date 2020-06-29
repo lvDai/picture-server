@@ -3,7 +3,7 @@ const mysql = require('../mysql');
 
 // 获取所有类别
 exports.getAllCategory = (req, res, next) => {
-    let sql = "select categoryId id,name from category";
+    let sql = "select cid,title,`desc`,create_date,create_uid,lastmodify_date,lastmodify_uid from t_catalog";
     let sqlArr = null;
     mysql.transactionQuery(sql, sqlArr, (err, items) => {
         if (err) {

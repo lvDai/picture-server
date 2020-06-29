@@ -12,7 +12,7 @@ exports.addPicture = (req, res, next) => {
     form.uploadDir = path.join(__dirname + "/../../data/images/a");
     form.keepExtensions = true; //保留后缀
     form.multiples = true; //设置为多文件上传
-    form.maxFieldsSize = 2 * 1024 * 1024;
+    form.maxFieldsSize = 100 * 1024 * 1024;
     form.parse(req, (err, fields, files) => {
         if (err) {
             public.returnStatus(res, 0, err, null);
@@ -117,7 +117,7 @@ exports.getContentPictures = (req, res, next) => {
 // 根据图片id查询详细信息
 exports.getPictureDetail = (req, res, next) => {
     let sql = `SELECT p.id id,p.publishTime publishTime,p.source source,p.url url,u.name name 
-    FROM pictures p INNER JOIN USER u ON p.userId = u.id WHERE p.id = ?`;
+    FROM pictures p INNER JOIN user u ON p.userId = u.id WHERE p.id = ?`;
     let sqlArr = [req.query.id * 1];
     mysql.query(sql, sqlArr, (err, items) => {
         if (err) {
